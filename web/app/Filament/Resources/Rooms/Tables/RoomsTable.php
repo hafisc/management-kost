@@ -22,8 +22,9 @@ class RoomsTable
                     ->label('Building')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('floor.name')
+                TextColumn::make('floor.floor_number')
                     ->label('Floor')
+                    ->formatStateUsing(fn ($state, $record) => $record->floor->name ?? "Lantai {$state}")
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('room_number')
@@ -65,7 +66,7 @@ class RoomsTable
                     ->relationship('building', 'name')
                     ->label('Building'),
                 SelectFilter::make('floor_id')
-                    ->relationship('floor', 'name')
+                    ->relationship('floor', 'floor_number')
                     ->label('Floor'),
                 SelectFilter::make('is_active')
                     ->options([

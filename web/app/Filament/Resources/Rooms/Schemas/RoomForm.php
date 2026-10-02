@@ -18,7 +18,7 @@ class RoomForm
                     ->relationship('building', 'name')
                     ->required(),
                 Select::make('floor_id')
-                    ->relationship('floor', 'name')
+                    ->relationship('floor', 'floor_number')
                     ->required(),
                 TextInput::make('room_number')
                     ->required(),

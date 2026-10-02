@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Payments\Payments\Pages\Payments\Payments\Pages;
+namespace App\Filament\Resources\Payments\Payments\Pages;
 
 use App\Filament\Resources\Payments\Payments\PaymentResource;
 use Filament\Actions\EditAction;

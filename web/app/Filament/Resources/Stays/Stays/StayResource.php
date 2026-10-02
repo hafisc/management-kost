@@ -7,7 +7,7 @@ use App\Filament\Resources\Stays\Stays\Pages\EditStay;
 use App\Filament\Resources\Stays\Stays\Pages\ListStays;
 use App\Filament\Resources\Stays\Stays\Schemas\StayForm;
 use App\Filament\Resources\Stays\Stays\Tables\StaysTable;
-use App\Models\Stays\Stay;
+use App\Models\Stay;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
@@ -18,7 +18,13 @@ class StayResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-home';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Management';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+
+    protected static ?string $navigationLabel = 'Menginap';
+
+    protected static ?string $modelLabel = 'Menginap';
+
+    protected static ?string $pluralModelLabel = 'Menginap';
 
     public static function form(Schema $schema): Schema
     {

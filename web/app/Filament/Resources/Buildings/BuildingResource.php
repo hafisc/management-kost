@@ -16,9 +16,15 @@ class BuildingResource extends Resource
 {
     protected static ?string $model = Building::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-home-modern';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-building-office-2';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Management';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+
+    protected static ?string $navigationLabel = 'Gedung';
+
+    protected static ?string $modelLabel = 'Gedung';
+
+    protected static ?string $pluralModelLabel = 'Gedung';
 
     public static function form(Schema $schema): Schema
     {

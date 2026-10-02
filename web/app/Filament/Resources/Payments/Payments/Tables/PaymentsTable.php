@@ -6,7 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Columns\TextColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -22,7 +22,7 @@ class PaymentsTable
                     ->date('d M Y')
                     ->sortable(),
 
-                TextColumn::make('tenant.name')
+                TextColumn::make('tenant.full_name')
                     ->label('Penyewa')
                     ->searchable()
                     ->sortable(),
@@ -77,7 +77,7 @@ class PaymentsTable
 
                 SelectFilter::make('tenant_id')
                     ->label('Penyewa')
-                    ->relationship('tenant', 'name')
+                    ->relationship('tenant', 'full_name')
                     ->searchable()
                     ->preload(),
 

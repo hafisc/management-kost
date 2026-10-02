@@ -8,7 +8,7 @@ use App\Filament\Resources\Tenants\Tenants\Pages\ListTenants;
 use App\Filament\Resources\Tenants\Tenants\RelationManagers\StaysRelationManager;
 use App\Filament\Resources\Tenants\Tenants\Schemas\TenantForm;
 use App\Filament\Resources\Tenants\Tenants\Tables\TenantsTable;
-use App\Models\Tenants\Tenant;
+use App\Models\Tenant;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
@@ -19,7 +19,13 @@ class TenantResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Management';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+
+    protected static ?string $navigationLabel = 'Penyewa';
+
+    protected static ?string $modelLabel = 'Penyewa';
+
+    protected static ?string $pluralModelLabel = 'Penyewa';
 
     public static function form(Schema $schema): Schema
     {

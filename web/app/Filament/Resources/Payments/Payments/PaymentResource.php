@@ -5,10 +5,10 @@ namespace App\Filament\Resources\Payments\Payments;
 use App\Filament\Resources\Payments\Payments\Pages\CreatePayment;
 use App\Filament\Resources\Payments\Payments\Pages\EditPayment;
 use App\Filament\Resources\Payments\Payments\Pages\ListPayments;
-use App\Filament\Resources\Payments\Payments\Pages\Payments\Payments\Pages\ViewPayment;
+use App\Filament\Resources\Payments\Payments\Pages\ViewPayment;
 use App\Filament\Resources\Payments\Payments\Schemas\PaymentForm;
 use App\Filament\Resources\Payments\Payments\Tables\PaymentsTable;
-use App\Models\Payments\Payment;
+use App\Models\Payment;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
@@ -19,7 +19,13 @@ class PaymentResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Management';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+
+    protected static ?string $navigationLabel = 'Pembayaran';
+
+    protected static ?string $modelLabel = 'Pembayaran';
+
+    protected static ?string $pluralModelLabel = 'Pembayaran';
 
     public static function form(Schema $schema): Schema
     {

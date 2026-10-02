@@ -22,7 +22,7 @@ class PaymentForm
                     ->schema([
                         Select::make('tenant_id')
                             ->label('Penyewa')
-                            ->relationship('tenant', 'name')
+                            ->relationship('tenant', 'full_name')
                             ->required()
                             ->searchable()
                             ->preload()

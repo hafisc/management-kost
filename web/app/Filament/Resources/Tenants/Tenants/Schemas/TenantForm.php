@@ -14,12 +14,12 @@ class TenantForm
             ->components([
                 Section::make('Informasi Penyewa')
                     ->schema([
-                        TextInput::make('name')
+                        TextInput::make('full_name')
                             ->label('Nama Lengkap')
                             ->required()
                             ->maxLength(255),
 
-                        TextInput::make('phone')
+                        TextInput::make('whatsapp_number')
                             ->label('Nomor WhatsApp')
                             ->tel()
                             ->required()
@@ -29,10 +29,6 @@ class TenantForm
                                 'regex' => 'Format nomor WhatsApp tidak valid. Harus dimulai dengan 08 atau +628.',
                             ])
                             ->helperText('Format: 08xxxxxxxxxx atau +628xxxxxxxxxx'),
-
-                        TextInput::make('id_card_number')
-                            ->label('NIK / No. KTP')
-                            ->maxLength(20),
                     ]),
             ]);
     }

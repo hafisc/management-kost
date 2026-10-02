@@ -16,9 +16,15 @@ class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-door-open';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-building-office';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Management';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+
+    protected static ?string $navigationLabel = 'Kamar';
+
+    protected static ?string $modelLabel = 'Kamar';
+
+    protected static ?string $pluralModelLabel = 'Kamar';
 
     public static function form(Schema $schema): Schema
     {

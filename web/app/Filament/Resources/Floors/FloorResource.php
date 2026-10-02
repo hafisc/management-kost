@@ -16,9 +16,15 @@ class FloorResource extends Resource
 {
     protected static ?string $model = Floor::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-squares-2x2';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Management';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+
+    protected static ?string $navigationLabel = 'Lantai';
+
+    protected static ?string $modelLabel = 'Lantai';
+
+    protected static ?string $pluralModelLabel = 'Lantai';
 
     public static function form(Schema $schema): Schema
     {

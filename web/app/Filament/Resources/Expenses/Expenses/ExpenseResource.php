@@ -7,7 +7,7 @@ use App\Filament\Resources\Expenses\Expenses\Pages\EditExpense;
 use App\Filament\Resources\Expenses\Expenses\Pages\ListExpenses;
 use App\Filament\Resources\Expenses\Expenses\Schemas\ExpenseForm;
 use App\Filament\Resources\Expenses\Expenses\Tables\ExpensesTable;
-use App\Models\Expenses\Expense;
+use App\Models\Expense;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
@@ -18,7 +18,13 @@ class ExpenseResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-arrow-trending-down';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Management';
+    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+
+    protected static ?string $navigationLabel = 'Pengeluaran';
+
+    protected static ?string $modelLabel = 'Pengeluaran';
+
+    protected static ?string $pluralModelLabel = 'Pengeluaran';
 
     public static function form(Schema $schema): Schema
     {

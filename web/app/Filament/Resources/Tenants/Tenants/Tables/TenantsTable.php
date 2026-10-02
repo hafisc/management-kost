@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Tenants\Tenants\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Columns\TextColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -15,21 +15,15 @@ class TenantsTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('full_name')
                     ->label('Nama')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('phone')
+                TextColumn::make('whatsapp_number')
                     ->label('WhatsApp')
                     ->searchable()
                     ->sortable(),
-
-                TextColumn::make('id_card_number')
-                    ->label('NIK')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(),
 
                 TextColumn::make('stays_count')
                     ->label('Total Sewa')

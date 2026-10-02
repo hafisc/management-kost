@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Stays\Stays\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Columns\TextColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -16,12 +16,12 @@ class StaysTable
     {
         return $table
             ->columns([
-                TextColumn::make('tenant.name')
+                TextColumn::make('tenant.full_name')
                     ->label('Penyewa')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('room.name')
+                TextColumn::make('room.room_number')
                     ->label('Kamar')
                     ->searchable()
                     ->sortable(),
@@ -30,12 +30,12 @@ class StaysTable
                     ->label('Gedung')
                     ->sortable(),
 
-                TextColumn::make('start_date')
+                TextColumn::make('start_at')
                     ->label('Masuk')
                     ->date('d M Y')
                     ->sortable(),
 
-                TextColumn::make('end_date')
+                TextColumn::make('end_at')
                     ->label('Keluar')
                     ->date('d M Y')
                     ->placeholder('Masih menghuni')
@@ -52,15 +52,15 @@ class StaysTable
 
                 TextColumn::make('duration')
                     ->label('Durasi')
-                    ->state(fn ($record) => $record->end_date
-                        ? $record->start_date->diffInDays($record->end_date).' hari'
-                        : $record->start_date->diffInDays(now()).' hari'
+                    ->state(fn ($record) => $record->end_at
+                        ? $record->start_at->diffInDays($record->end_at).' hari'
+                        : $record->start_at->diffInDays(now()).' hari'
                     ),
             ])
             ->filters([
                 SelectFilter::make('room_id')
                     ->label('Kamar')
-                    ->relationship('room', 'name')
+                    ->relationship('room', 'room_number')
                     ->searchable()
                     ->preload(),
 
@@ -80,6 +80,6 @@ class StaysTable
                     DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('start_date', 'desc');
+            ->defaultSort('start_at', 'desc');
     }
 }
