@@ -1,103 +1,128 @@
 <x-filament-panels::page>
-    <div class="space-y-6">
+    <style>
+        .room-card {
+            min-height: 90px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .room-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .room-occupied {
+            background: linear-gradient(135deg, #042B60 0%, #03214a 100%);
+            color: white;
+            border: 2px solid #042B60;
+        }
+        .room-expiring {
+            background: linear-gradient(135deg, #FCB502 0%, #e3a402 100%);
+            color: #1a1a1a;
+            border: 2px solid #FCB502;
+        }
+        .room-available {
+            background: white;
+            color: #374151;
+            border: 2px solid #d1d5db;
+        }
+        .room-available:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+    </style>
+
+    <div style="display: flex; flex-direction: column; gap: 24px;">
         {{-- Stats Summary --}}
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-                <div class="text-sm text-gray-500">Total Kamar</div>
-                <div class="text-2xl font-bold text-blue-600">{{ $this->getStats()['total'] }}</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            @php $stats = $this->getStats(); @endphp
+            
+            <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #3b82f6;">
+                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;">Total Kamar</div>
+                <div style="font-size: 32px; font-weight: bold; color: #3b82f6;">{{ $stats['total'] }}</div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
-                <div class="text-sm text-gray-500">Terisi</div>
-                <div class="text-2xl font-bold text-green-600">{{ $this->getStats()['occupied'] }}</div>
+
+            <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #10b981;">
+                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;">Terisi</div>
+                <div style="font-size: 32px; font-weight: bold; color: #10b981;">{{ $stats['occupied'] }}</div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-gray-500">
-                <div class="text-sm text-gray-500">Kosong</div>
-                <div class="text-2xl font-bold text-gray-600">{{ $this->getStats()['available'] }}</div>
+
+            <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #6b7280;">
+                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;">Kosong</div>
+                <div style="font-size: 32px; font-weight: bold; color: #6b7280;">{{ $stats['available'] }}</div>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
-                <div class="text-sm text-gray-500">Akan Checkout</div>
-                <div class="text-2xl font-bold text-yellow-600">{{ $this->getStats()['expiring'] }}</div>
+
+            <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #f59e0b;">
+                <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;">Akan Checkout</div>
+                <div style="font-size: 32px; font-weight: bold; color: #f59e0b;">{{ $stats['expiring'] }}</div>
             </div>
         </div>
 
         {{-- Filter Tabs --}}
-        <div class="bg-white rounded-lg shadow">
-            <div class="border-b border-gray-200">
-                <nav class="flex space-x-8 px-6" aria-label="Tabs">
-                    <button 
-                        wire:click="$set('selectedStatus', 'all')"
-                        class="py-4 px-1 border-b-2 font-medium text-sm {{ $selectedStatus === 'all' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
-                    >
-                        Semua
-                    </button>
-                    <button 
-                        wire:click="$set('selectedStatus', 'active')"
-                        class="py-4 px-1 border-b-2 font-medium text-sm {{ $selectedStatus === 'active' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
-                    >
-                        Terisi
-                    </button>
-                    <button 
-                        wire:click="$set('selectedStatus', 'available')"
-                        class="py-4 px-1 border-b-2 font-medium text-sm {{ $selectedStatus === 'available' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
-                    >
-                        Kosong
-                    </button>
-                    <button 
-                        wire:click="$set('selectedStatus', 'expiring')"
-                        class="py-4 px-1 border-b-2 font-medium text-sm {{ $selectedStatus === 'expiring' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
-                    >
-                        Akan Checkout
-                    </button>
-                </nav>
+        <div style="background: white; border-radius: 8px; padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <div style="display: flex; gap: 32px; padding: 0 24px; border-bottom: 1px solid #e5e7eb;">
+                <button 
+                    wire:click="$set('selectedStatus', 'all')"
+                    style="padding: 16px 4px; border-bottom: 2px solid {{ $selectedStatus === 'all' ? '#3b82f6' : 'transparent' }}; color: {{ $selectedStatus === 'all' ? '#3b82f6' : '#6b7280' }}; font-weight: 500; background: none; border-left: none; border-right: none; border-top: none; cursor: pointer;"
+                >
+                    Semua
+                </button>
+                <button 
+                    wire:click="$set('selectedStatus', 'active')"
+                    style="padding: 16px 4px; border-bottom: 2px solid {{ $selectedStatus === 'active' ? '#3b82f6' : 'transparent' }}; color: {{ $selectedStatus === 'active' ? '#3b82f6' : '#6b7280' }}; font-weight: 500; background: none; border-left: none; border-right: none; border-top: none; cursor: pointer;"
+                >
+                    Terisi
+                </button>
+                <button 
+                    wire:click="$set('selectedStatus', 'available')"
+                    style="padding: 16px 4px; border-bottom: 2px solid {{ $selectedStatus === 'available' ? '#3b82f6' : 'transparent' }}; color: {{ $selectedStatus === 'available' ? '#3b82f6' : '#6b7280' }}; font-weight: 500; background: none; border-left: none; border-right: none; border-top: none; cursor: pointer;"
+                >
+                    Kosong
+                </button>
+                <button 
+                    wire:click="$set('selectedStatus', 'expiring')"
+                    style="padding: 16px 4px; border-bottom: 2px solid {{ $selectedStatus === 'expiring' ? '#3b82f6' : 'transparent' }}; color: {{ $selectedStatus === 'expiring' ? '#3b82f6' : '#6b7280' }}; font-weight: 500; background: none; border-left: none; border-right: none; border-top: none; cursor: pointer;"
+                >
+                    Akan Checkout
+                </button>
             </div>
         </div>
 
         {{-- Room Grid by Building and Floor --}}
         @foreach($this->getRoomsByBuilding() as $buildingName => $floors)
-            <div class="bg-white rounded-lg shadow overflow-hidden">
-                <div class="bg-gradient-to-r from-gray-700 to-gray-600 px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-bold text-white">{{ strtoupper($buildingName) }}</h3>
+            <div style="background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden;">
+                <div style="background: linear-gradient(135deg, #4b5563 0%, #374151 100%); padding: 16px 24px;">
+                    <h3 style="font-size: 18px; font-weight: bold; color: white; margin: 0;">{{ strtoupper($buildingName) }}</h3>
                 </div>
 
                 @foreach($floors as $floorNumber => $rooms)
-                    <div class="px-6 py-6 border-b border-gray-100 last:border-b-0">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="bg-gray-100 px-3 py-1 rounded-md">
-                                <span class="text-sm font-bold text-gray-700">LANTAI {{ $floorNumber }}</span>
-                            </div>
-                            <div class="text-xs text-gray-500">
-                                {{ $rooms->count() }} kamar
-                            </div>
+                    <div style="padding: 24px; border-bottom: 1px solid #f3f4f6;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <span style="background: #f3f4f6; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 13px; color: #374151;">
+                                LANTAI {{ $floorNumber }}
+                            </span>
+                            <span style="font-size: 13px; color: #6b7280;">{{ $rooms->count() }} kamar</span>
                         </div>
                         
-                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 12px;">
                             @foreach($rooms as $room)
+                                @php
+                                    $roomClass = $room->occupancy_status === 'ACTIVE' ? 'room-occupied' : 
+                                                ($room->occupancy_status === 'EXPIRING' ? 'room-expiring' : 'room-available');
+                                @endphp
+
                                 <button
                                     wire:click="selectRoom({{ $room->id }})"
-                                    class="group relative rounded-xl border-2 p-3 transition-all hover:shadow-xl hover:scale-105 min-h-[80px] flex flex-col justify-center items-center
-                                        @if($room->occupancy_status === 'ACTIVE')
-                                            bg-gradient-to-br from-[#042B60] to-[#03214a] border-[#042B60] text-white shadow-md
-                                        @elseif($room->occupancy_status === 'EXPIRING')
-                                            bg-gradient-to-br from-[#FCB502] to-[#e3a402] border-[#FCB502] text-gray-900 shadow-md
-                                        @else
-                                            bg-white border-gray-300 text-gray-700 hover:border-blue-400 hover:bg-blue-50
-                                        @endif
-                                    "
+                                    class="room-card {{ $roomClass }}"
+                                    style="position: relative; border-radius: 8px; padding: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
                                 >
                                     {{-- Capacity Badge --}}
-                                    <div class="absolute top-1 right-1 text-[10px] px-1.5 py-0.5 rounded-md font-semibold
-                                        @if($room->occupancy_status === 'AVAILABLE')
-                                            bg-gray-200 text-gray-700
-                                        @else
-                                            bg-white/30 backdrop-blur-sm
-                                        @endif
-                                    ">
+                                    <div style="position: absolute; top: 4px; right: 4px; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 600;
+                                        {{ $room->occupancy_status === 'AVAILABLE' ? 'background: #e5e7eb; color: #374151;' : 'background: rgba(255,255,255,0.3); color: inherit;' }}">
                                         {{ $room->capacity }}x
                                     </div>
 
-                                    <div class="text-center w-full">
-                                        <div class="text-lg font-black mb-0.5">{{ $room->room_number }}</div>
-                                        <div class="text-[10px] font-semibold uppercase tracking-wide opacity-80">
+                                    <div style="text-align: center;">
+                                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 4px;">{{ $room->room_number }}</div>
+                                        <div style="font-size: 10px; font-weight: 600; text-transform: uppercase; opacity: 0.9;">
                                             @if($room->occupancy_status === 'ACTIVE')
                                                 Terisi
                                             @elseif($room->occupancy_status === 'EXPIRING')
@@ -107,7 +132,7 @@
                                             @endif
                                         </div>
                                         @if($room->current_tenant)
-                                            <div class="text-[9px] mt-1 opacity-70 truncate px-1">
+                                            <div style="font-size: 9px; margin-top: 4px; opacity: 0.8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                                                 {{ Str::limit($room->current_tenant->full_name, 10) }}
                                             </div>
                                         @endif
@@ -127,33 +152,31 @@
                     Kamar {{ $selectedRoom->room_number }}
                 </x-slot>
 
-                <div class="space-y-6">
+                <div style="display: flex; flex-direction: column; gap: 24px;">
                     {{-- Room Info --}}
-                    <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 14px;">
                         <div>
-                            <div class="text-gray-500">Gedung</div>
-                            <div class="font-semibold">{{ $selectedRoom->building->name }}</div>
+                            <div style="color: #6b7280; margin-bottom: 4px;">Gedung</div>
+                            <div style="font-weight: 600;">{{ $selectedRoom->building->name }}</div>
                         </div>
                         <div>
-                            <div class="text-gray-500">Lantai</div>
-                            <div class="font-semibold">{{ $selectedRoom->floor->floor_number }}</div>
+                            <div style="color: #6b7280; margin-bottom: 4px;">Lantai</div>
+                            <div style="font-weight: 600;">{{ $selectedRoom->floor->floor_number }}</div>
                         </div>
                         <div>
-                            <div class="text-gray-500">Kapasitas</div>
-                            <div class="font-semibold">{{ $selectedRoom->capacity }} orang</div>
+                            <div style="color: #6b7280; margin-bottom: 4px;">Kapasitas</div>
+                            <div style="font-weight: 600;">{{ $selectedRoom->capacity }} orang</div>
                         </div>
                         <div>
-                            <div class="text-gray-500">Status</div>
+                            <div style="color: #6b7280; margin-bottom: 4px;">Status</div>
                             <div>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if($selectedRoom->occupancy_status === 'ACTIVE')
-                                        bg-blue-100 text-blue-800
-                                    @elseif($selectedRoom->occupancy_status === 'EXPIRING')
-                                        bg-yellow-100 text-yellow-800
-                                    @else
-                                        bg-gray-100 text-gray-800
-                                    @endif
-                                ">
+                                @php
+                                    $statusColor = $selectedRoom->occupancy_status === 'ACTIVE' ? '#10b981' :
+                                                  ($selectedRoom->occupancy_status === 'EXPIRING' ? '#f59e0b' : '#6b7280');
+                                    $statusBg = $selectedRoom->occupancy_status === 'ACTIVE' ? '#d1fae5' :
+                                               ($selectedRoom->occupancy_status === 'EXPIRING' ? '#fef3c7' : '#f3f4f6');
+                                @endphp
+                                <span style="display: inline-block; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 500; background: {{ $statusBg }}; color: {{ $statusColor }};">
                                     @if($selectedRoom->occupancy_status === 'ACTIVE')
                                         Terisi
                                     @elseif($selectedRoom->occupancy_status === 'EXPIRING')
@@ -168,66 +191,70 @@
 
                     @if($selectedRoom->current_tenant)
                         {{-- Tenant Info --}}
-                        <div class="border-t pt-4">
-                            <h4 class="font-semibold text-gray-900 mb-3">Penghuni</h4>
-                            <div class="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-500">Nama</span>
-                                    <span class="font-semibold">{{ $selectedRoom->current_tenant->full_name }}</span>
+                        <div style="border-top: 1px solid #e5e7eb; padding-top: 16px;">
+                            <h4 style="font-weight: 600; margin-bottom: 12px; font-size: 16px;">Penghuni</h4>
+                            <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">
+                                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: #6b7280;">Nama</span>
+                                        <span style="font-weight: 600;">{{ $selectedRoom->current_tenant->full_name }}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: #6b7280;">WhatsApp</span>
+                                        <span style="font-weight: 600;">{{ $selectedRoom->current_tenant->whatsapp_number }}</span>
+                                    </div>
+                                    @if($selectedRoom->current_stay)
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: #6b7280;">Check-in</span>
+                                            <span style="font-weight: 600;">{{ \Carbon\Carbon::parse($selectedRoom->current_stay->start_at)->locale('id')->format('d M Y') }}</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: #6b7280;">Check-out</span>
+                                            <span style="font-weight: 600;">{{ \Carbon\Carbon::parse($selectedRoom->current_stay->end_at)->locale('id')->format('d M Y') }}</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: #6b7280;">Durasi</span>
+                                            <span style="font-weight: 600;">
+                                                {{ $selectedRoom->current_stay->duration_value }} 
+                                                {{ str_replace(['daily', 'weekly', 'monthly'], ['Hari', 'Minggu', 'Bulan'], $selectedRoom->current_stay->duration_type) }}
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-500">WhatsApp</span>
-                                    <span class="font-semibold">{{ $selectedRoom->current_tenant->whatsapp_number }}</span>
-                                </div>
-                                @if($selectedRoom->current_stay)
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Check-in</span>
-                                        <span class="font-semibold">{{ \Carbon\Carbon::parse($selectedRoom->current_stay->start_at)->locale('id')->format('d M Y') }}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Check-out</span>
-                                        <span class="font-semibold">{{ \Carbon\Carbon::parse($selectedRoom->current_stay->end_at)->locale('id')->format('d M Y') }}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Durasi</span>
-                                        <span class="font-semibold">
-                                            {{ $selectedRoom->current_stay->duration_value }} 
-                                            {{ str_replace(['daily', 'weekly', 'monthly'], ['Hari', 'Minggu', 'Bulan'], $selectedRoom->current_stay->duration_type) }}
-                                        </span>
-                                    </div>
-                                @endif
                             </div>
                         </div>
 
                         {{-- Payment Info --}}
                         @if($selectedRoom->current_stay && $selectedRoom->current_stay->payments->count() > 0)
-                            <div class="border-t pt-4">
-                                <h4 class="font-semibold text-gray-900 mb-3">Pembayaran Terakhir</h4>
+                            <div style="border-top: 1px solid #e5e7eb; padding-top: 16px;">
+                                <h4 style="font-weight: 600; margin-bottom: 12px; font-size: 16px;">Pembayaran Terakhir</h4>
                                 @php
                                     $lastPayment = $selectedRoom->current_stay->payments->sortByDesc('payment_date')->first();
                                 @endphp
-                                <div class="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Total</span>
-                                        <span class="font-semibold text-green-600">Rp {{ number_format($lastPayment->amount, 0, ',', '.') }}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Metode</span>
-                                        <span class="font-semibold capitalize">{{ str_replace('_', ' ', $lastPayment->payment_method) }}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Tanggal</span>
-                                        <span class="font-semibold">{{ \Carbon\Carbon::parse($lastPayment->payment_date)->locale('id')->format('d M Y') }}</span>
+                                <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">
+                                    <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: #6b7280;">Total</span>
+                                            <span style="font-weight: bold; color: #10b981;">Rp {{ number_format($lastPayment->amount, 0, ',', '.') }}</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: #6b7280;">Metode</span>
+                                            <span style="font-weight: 600; text-transform: capitalize;">{{ str_replace('_', ' ', $lastPayment->payment_method) }}</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span style="color: #6b7280;">Tanggal</span>
+                                            <span style="font-weight: 600;">{{ \Carbon\Carbon::parse($lastPayment->payment_date)->locale('id')->format('d M Y') }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @endif
                     @else
-                        <div class="text-center py-8 text-gray-500">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div style="text-align: center; padding: 32px; color: #6b7280;">
+                            <svg style="margin: 0 auto; width: 48px; height: 48px; color: #9ca3af;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
-                            <p class="mt-2">Kamar ini sedang kosong</p>
+                            <p style="margin-top: 8px;">Kamar ini sedang kosong</p>
                         </div>
                     @endif
                 </div>
