@@ -16,15 +16,15 @@ class StayResource extends Resource
 {
     protected static ?string $model = Stay::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-home';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-users';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Menginap';
+    protected static ?string $navigationLabel = 'Penghuni';
 
-    protected static ?string $modelLabel = 'Menginap';
+    protected static ?string $modelLabel = 'Penghuni';
 
-    protected static ?string $pluralModelLabel = 'Menginap';
+    protected static ?string $pluralModelLabel = 'Penghuni';
 
     public static function form(Schema $schema): Schema
     {

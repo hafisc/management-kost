@@ -22,6 +22,11 @@ class Tenant extends Model
         return $this->hasMany(Stay::class);
     }
 
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function activeStay()
     {
         return $this->hasOne(Stay::class)

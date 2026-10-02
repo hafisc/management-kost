@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('status')->default('ACTIVE'); // ACTIVE, EXPIRING, EXPIRED, CHECKED_OUT
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index('tenant_id');
             $table->index('room_id');

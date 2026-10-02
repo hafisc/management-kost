@@ -16,6 +16,8 @@ class FloorResource extends Resource
 {
     protected static ?string $model = Floor::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-queue-list';
 
     protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';

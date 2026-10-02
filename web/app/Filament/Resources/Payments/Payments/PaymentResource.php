@@ -19,7 +19,7 @@ class PaymentResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationLabel = 'Pembayaran';
 

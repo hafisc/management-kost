@@ -16,6 +16,8 @@ class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-arrow-trending-down';
 
     protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';

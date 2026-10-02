@@ -16,6 +16,8 @@ class BuildingResource extends Resource
 {
     protected static ?string $model = Building::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-building-office-2';
 
     protected static \UnitEnum|string|null $navigationGroup = 'Manajemen';

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Expense;
+use App\Models\Payment;
 use App\Models\Room;
 use App\Models\Stay;
 use App\Models\Tenant;
@@ -10,17 +12,19 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends StatsOverviewWidget
 {
+    protected static ?int $sort = 1;
+
     protected function getStats(): array
     {
         $totalRooms = Room::where('is_active', true)->count();
         $occupiedRooms = Stay::active()->distinct('room_id')->count('room_id');
         $occupancyRate = $totalRooms > 0 ? round(($occupiedRooms / $totalRooms) * 100, 1) : 0;
 
-        $monthlyIncome = \App\Models\Payment::whereMonth('payment_date', now()->month)
+        $monthlyIncome = Payment::whereMonth('payment_date', now()->month)
             ->whereYear('payment_date', now()->year)
             ->sum('amount');
 
-        $monthlyExpense = \App\Models\Expense::whereMonth('expense_date', now()->month)
+        $monthlyExpense = Expense::whereMonth('expense_date', now()->month)
             ->whereYear('expense_date', now()->year)
             ->sum('amount');
 
