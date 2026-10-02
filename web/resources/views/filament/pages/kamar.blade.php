@@ -55,55 +55,62 @@
         {{-- Room Grid by Building and Floor --}}
         @foreach($this->getRoomsByBuilding() as $buildingName => $floors)
             <div class="bg-white rounded-lg shadow overflow-hidden">
-                <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ $buildingName }}</h3>
+                <div class="bg-gradient-to-r from-gray-700 to-gray-600 px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-bold text-white">{{ strtoupper($buildingName) }}</h3>
                 </div>
 
                 @foreach($floors as $floorNumber => $rooms)
-                    <div class="px-6 py-4 border-b border-gray-100 last:border-b-0">
-                        <h4 class="text-sm font-medium text-gray-700 mb-4">Lantai {{ $floorNumber }}</h4>
+                    <div class="px-6 py-6 border-b border-gray-100 last:border-b-0">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="bg-gray-100 px-3 py-1 rounded-md">
+                                <span class="text-sm font-bold text-gray-700">LANTAI {{ $floorNumber }}</span>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                {{ $rooms->count() }} kamar
+                            </div>
+                        </div>
                         
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
                             @foreach($rooms as $room)
                                 <button
                                     wire:click="selectRoom({{ $room->id }})"
-                                    class="group relative rounded-lg border-2 p-4 transition-all hover:shadow-lg
+                                    class="group relative rounded-xl border-2 p-3 transition-all hover:shadow-xl hover:scale-105 min-h-[80px] flex flex-col justify-center items-center
                                         @if($room->occupancy_status === 'ACTIVE')
-                                            bg-[#042B60] border-[#042B60] text-white hover:bg-[#03214a]
+                                            bg-gradient-to-br from-[#042B60] to-[#03214a] border-[#042B60] text-white shadow-md
                                         @elseif($room->occupancy_status === 'EXPIRING')
-                                            bg-[#FCB502] border-[#FCB502] text-gray-900 hover:bg-[#e3a402]
+                                            bg-gradient-to-br from-[#FCB502] to-[#e3a402] border-[#FCB502] text-gray-900 shadow-md
                                         @else
-                                            bg-white border-gray-300 text-gray-700 hover:border-gray-400
+                                            bg-white border-gray-300 text-gray-700 hover:border-blue-400 hover:bg-blue-50
                                         @endif
                                     "
                                 >
-                                    <div class="text-center">
-                                        <div class="text-lg font-bold mb-1">{{ $room->room_number }}</div>
-                                        <div class="text-xs opacity-80">
+                                    {{-- Capacity Badge --}}
+                                    <div class="absolute top-1 right-1 text-[10px] px-1.5 py-0.5 rounded-md font-semibold
+                                        @if($room->occupancy_status === 'AVAILABLE')
+                                            bg-gray-200 text-gray-700
+                                        @else
+                                            bg-white/30 backdrop-blur-sm
+                                        @endif
+                                    ">
+                                        {{ $room->capacity }}x
+                                    </div>
+
+                                    <div class="text-center w-full">
+                                        <div class="text-lg font-black mb-0.5">{{ $room->room_number }}</div>
+                                        <div class="text-[10px] font-semibold uppercase tracking-wide opacity-80">
                                             @if($room->occupancy_status === 'ACTIVE')
                                                 Terisi
                                             @elseif($room->occupancy_status === 'EXPIRING')
-                                                Akan Checkout
+                                                Checkout
                                             @else
                                                 Kosong
                                             @endif
                                         </div>
                                         @if($room->current_tenant)
-                                            <div class="text-xs mt-1 opacity-70 truncate">
-                                                {{ Str::limit($room->current_tenant->full_name, 12) }}
+                                            <div class="text-[9px] mt-1 opacity-70 truncate px-1">
+                                                {{ Str::limit($room->current_tenant->full_name, 10) }}
                                             </div>
                                         @endif
-                                    </div>
-
-                                    {{-- Capacity Badge --}}
-                                    <div class="absolute top-1 right-1 text-xs px-1.5 py-0.5 rounded
-                                        @if($room->occupancy_status === 'AVAILABLE')
-                                            bg-gray-200 text-gray-700
-                                        @else
-                                            bg-white/20
-                                        @endif
-                                    ">
-                                        {{ $room->capacity }}
                                     </div>
                                 </button>
                             @endforeach
