@@ -16,6 +16,8 @@ class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-building-office-2';
 
     protected static ?int $navigationSort = 2;
