@@ -3,7 +3,7 @@
 Digital management system for Kost Sumber Rezeki.
 
 ## Applications
-web/ = Laravel 13 + Filament + MySQL
+web/ = Laravel 13 + Vue.js + Tailwind CSS + MySQL
 bot/ = Bot Management Kost + WhatsApp
 
 ## Architecture

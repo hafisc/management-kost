@@ -13,8 +13,6 @@ return [
     |
     */
 
-    'bot_api_key' => env('BOT_API_KEY', 'default-insecure-key-change-in-production'),
-
     'name' => env('APP_NAME', 'Laravel'),
 
     /*

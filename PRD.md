@@ -5,7 +5,7 @@ Management Kost is a digital system for Kost Sumber Rezeki.
 
 Components:
 - Laravel 13 web application
-- Filament admin panel
+- Vue.js + Tailwind CSS admin interface
 - MySQL
 - REST API
 - Bot Management Kost

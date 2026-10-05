@@ -8,48 +8,63 @@ use Illuminate\Http\Request;
 
 class TenantController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = Tenant::query();
+        $tenants = Tenant::with(['stays.room'])->get();
 
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('full_name', 'like', "%{$search}%")
-                    ->orWhere('whatsapp_number', 'like', "%{$search}%");
-            });
-        }
+        $data = $tenants->map(function ($tenant) {
+            $stay = $tenant->stays->sortByDesc('id')->first();
+            
+            $room = $stay ? $stay->room : null;
+            $buildingName = $room ? str_replace('Gedung ', '', $room->building) : '-';
+            $roomNumberPrefix = $room ? ($room->building === 'Gedung Putri' ? 'P' : 'L') : '';
+            $roomName = $room ? $roomNumberPrefix . '-' . $room->number : '-';
 
-        return $query->with('stays')->paginate(20);
-    }
+            $paymentType = 'secondary';
+            if ($stay) {
+                $paymentType = match($stay->payment_status) {
+                    'Lunas' => 'success',
+                    'Pending' => 'info',
+                    'Verifikasi' => 'warning',
+                    default => 'secondary'
+                };
+            }
 
-    public function show($id)
-    {
-        $tenant = Tenant::with(['stays.room.building'])->findOrFail($id);
+            $statusType = match($tenant->status) {
+                'Aktif' => 'success',
+                'Akan Checkout' => 'warning',
+                'Berakhir' => 'warning',
+                'Checkout' => 'secondary',
+                default => 'secondary'
+            };
 
-        return response()->json($tenant);
-    }
+            return [
+                'id' => $tenant->id,
+                'name' => $tenant->name,
+                'occupants' => $stay ? $stay->occupancy_type : 1,
+                'whatsapp' => $tenant->whatsapp,
+                'building' => $buildingName,
+                'floor' => $room ? $room->floor : '-',
+                'room' => $roomName,
+                'check_in' => $stay ? \Carbon\Carbon::parse($stay->check_in)->translatedFormat('d M Y') : '-',
+                'check_out' => $stay && $stay->check_out ? \Carbon\Carbon::parse($stay->check_out)->translatedFormat('d M Y') : '-',
+                'duration' => $stay ? $stay->duration : '-',
+                'total' => 'Rp 600.000',
+                'payment' => [
+                    'status' => $stay ? $stay->payment_status : 'Pending',
+                    'type' => $paymentType
+                ],
+                'status' => [
+                    'text' => $tenant->status,
+                    'type' => $statusType
+                ],
+                'notes' => $tenant->notes ?? '-'
+            ];
+        });
 
-    public function findByPhone($phone)
-    {
-        $tenant = Tenant::where('whatsapp_number', $phone)->with('stays')->first();
-
-        if (! $tenant) {
-            return response()->json(['message' => 'Tenant not found'], 404);
-        }
-
-        return response()->json($tenant);
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'whatsapp_number' => 'required|string|max:20',
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
         ]);
-
-        $tenant = Tenant::create($validated);
-
-        return response()->json($tenant, 201);
     }
 }

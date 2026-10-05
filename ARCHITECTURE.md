@@ -6,7 +6,7 @@ WhatsApp
   ↓
 Bot Management Kost
   ↓ authenticated REST API
-Laravel 13 + Filament
+Laravel 13 + Vue.js + Tailwind CSS
   ↓
 MySQL
 
@@ -19,7 +19,7 @@ Laravel owns:
 - database
 - authentication
 - authorization
-- Filament
+- Vue.js
 - REST API
 - scheduler
 - queues
@@ -42,7 +42,6 @@ Use normal Laravel structure. When justified:
 app/
   Actions/
   Enums/
-  Filament/
   Http/
     Controllers/
     Requests/

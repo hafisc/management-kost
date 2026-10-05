@@ -5,7 +5,7 @@ Management Kost is the management system for Kost Sumber Rezeki.
 Bot: Bot Management Kost.
 
 ## Stack
-Web: Laravel 13, Filament 5, PHP, MySQL.
+Web: Laravel 13, Vue.js, Tailwind CSS, PHP, MySQL.
 Bot: Node.js, JavaScript/TypeScript, WhatsApp Web integration.
 Infrastructure: web hosting for Laravel and VPS for the bot. Pterodactyl may manage the bot process.
 
@@ -54,12 +54,12 @@ Use appropriate separation:
 - Services/Actions: reusable business logic
 - Controllers: thin orchestration
 - API Resources: API responses
-- Filament Resources/Pages: admin UI
+- Vue Components/Pages: admin UI
 - Jobs: asynchronous work
 - Commands: CLI
 - Notifications: notifications
 
-Do not put large business logic in controllers or Filament components.
+Do not put large business logic in controllers or Vue components.
 
 ## Database
 Use MySQL with foreign keys, indexes, unique constraints, transactions and migrations.
